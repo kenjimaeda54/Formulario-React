@@ -5,15 +5,16 @@ class index extends Component{
      constructor(props){
        super(props);
        this.state={
-         form:{
+        error:'',
+        form:{
            nome:'',
            email:'',
            senha:'',
            sexo:'masculino',
-           error:""
-          }
-       }
+             }
+        }
        this.mudanca = this.mudanca.bind(this);
+       this.cadastro = this.cadastro.bind(this)
     } 
     mudanca(e){
       let form = this.state.form;
@@ -24,12 +25,22 @@ class index extends Component{
       this.setState({form:  form});
  
     }
+    cadastro(event){
+      const{nome, email, senha, sexo} = this.state.form;
+      if(nome !== '' && email !=='' && senha !=='' && sexo !==''){
+        alert(`Nome: ${nome} \n E-mail: ${email} \n Senha: ${senha} \n Sexo: ${sexo} ` );
+      }else{
+        this.setState({error:"Ops falta preencher campos"});
+      }
+      event.preventDefault();
+    }
     
     render(){
        return(
          <div>
            <h1>Cadastro</h1>
-           {this.state.form.error && <p>Ops!!Falta algo</p>}
+           {this.state.error && <p>{this.state.error}</p>}
+           <form onSubmit={this.cadastro}>
            <label>Nome</label>
            <input type="text" name="nome" value={this.state.form.nome}
                   onChange={this.mudanca}/><br/>
@@ -41,17 +52,12 @@ class index extends Component{
                   onChange={this.mudanca}/><br/>
            <label>Sexo</label>
            <select name="sexo" value={this.state.form.sexo} 
-                   onChange={this.mudanca}><br/>
+                   onChange={this.mudanca}>
            <option value="masculino">Masculino</option>
            <option value="feminino">Feminino</option>
-           </select>               
-           <div>
-             <h3>{this.state.form.nome}</h3>
-             <h3>{this.state.form.email}</h3>
-             <h3>{this.state.form.senha}</h3>
-             <h3>{this.state.form.sexo}</h3>
-           </div>
-           
+           </select> <br/>                        
+           <button type="submit">Cadastrar</button>
+           </form>
          </div>
        );
      }
